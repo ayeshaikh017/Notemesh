@@ -1,0 +1,65 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: #f7f7fb; color: #1f2430; }
+
+.navbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 28px; background: #1f2430; color: white;
+}
+.navbar .brand { color: white; text-decoration: none; font-weight: 700; font-size: 1.2rem; }
+.nav-links { display: flex; gap: 14px; align-items: center; }
+.nav-links a, .nav-links button {
+  color: white; text-decoration: none; background: transparent; border: 1px solid #444a5c;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+}
+.user-pill { background: #3949ab; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 24px; }
+
+.card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.form-card { max-width: 400px; margin: 40px auto; }
+.form-card.wide { max-width: 700px; }
+.form-card input, .form-card textarea {
+  width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem;
+}
+.form-card .row { display: flex; gap: 8px; }
+.form-card button {
+  width: 100%; padding: 10px; margin-top: 10px; background: #3949ab; color: white;
+  border: none; border-radius: 6px; cursor: pointer; font-weight: 600;
+}
+.error-text { color: #dc2626; font-size: 0.9rem; }
+.hint { color: #6b7280; font-size: 0.85rem; }
+
+.search-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+.search-bar input { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
+.search-bar button { padding: 10px 16px; border: none; background: #3949ab; color: white; border-radius: 6px; cursor: pointer; }
+
+.note-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.note-card { text-decoration: none; color: inherit; display: block; }
+.note-card h3 { margin: 0 0 6px; }
+.meta { color: #6b7280; font-size: 0.85rem; margin: 2px 0; }
+.meta.small { font-size: 0.75rem; }
+
+.heatmap-legend { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; margin: 10px 0 18px; color: #4b5563; }
+.heatmap-legend .swatch { width: 16px; height: 16px; display: inline-block; border-radius: 3px; margin-right: 2px; }
+
+.note-body { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.block-row { display: flex; flex-direction: column; }
+.block {
+  padding: 14px; border-radius: 8px; cursor: pointer; border: 1px solid #eee; background: white;
+  transition: background 0.15s ease;
+}
+.block.active { border-color: #3949ab; }
+.block p { margin: 0 0 6px; line-height: 1.5; }
+.doubt-count { font-size: 0.75rem; color: #6b7280; }
+
+.doubt-panel { background: #fafafe; border: 1px dashed #ccc; border-radius: 8px; padding: 12px; margin-top: 4px; }
+.doubt-item { margin-bottom: 8px; }
+.doubt-question { background: none; border: none; text-align: left; cursor: pointer; font-size: 0.9rem; padding: 4px 0; }
+.answer-list { margin: 6px 0 6px 16px; padding-left: 10px; border-left: 2px solid #ddd; }
+.answer { margin-bottom: 6px; }
+.answer-meta { display: flex; gap: 10px; align-items: center; font-size: 0.8rem; color: #6b7280; }
+.answer-meta button { border: none; background: #eef; border-radius: 4px; cursor: pointer; padding: 2px 8px; }
+
+.inline-form { display: flex; gap: 6px; margin-top: 6px; }
+.inline-form input { flex: 1; padding: 6px; border-radius: 6px; border: 1px solid #ddd; }
+.inline-form button { border: none; background: #3949ab; color: white; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
