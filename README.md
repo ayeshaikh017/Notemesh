@@ -1,10 +1,56 @@
-# NoteMesh — MVP
+# 📝 NoteMesh
 
-Smart class notes + doubt resolution network. Notes are split into blocks
-(paragraphs). Doubts are anchored to a specific block, not floating in a
-generic chat. A confusion heatmap shows which blocks get the most doubts.
+**Class notes with doubts anchored to the exact line they're about — not lost in a WhatsApp group chat.**
 
-## Folder structure
+NoteMesh is a MERN-stack platform where students write or upload notes, raise doubts directly on the paragraph they're confused about, and answer each other's doubts. Over time, every topic builds its own searchable doubt archive — and a **confusion heatmap** shows exactly which part of a topic trips students up the most.
+
+---
+
+## 💡 The problem
+
+Class notes and doubts live scattered across WhatsApp groups, Google Docs, and physical notebooks. When a student gets stuck, they either ask in a group chat that scrolls away in five minutes, or give up. The same doubt gets re-asked by every new batch of students because nothing is ever recorded against the actual content it's about.
+
+## ✅ The solution
+
+- Notes are broken into **blocks** (paragraphs), each with a stable ID.
+- A doubt is raised **on a specific block**, not posted into a generic thread.
+- Answers are upvoted, so the best explanation rises to the top.
+- A **Confusion Heatmap** aggregates doubt counts per block, so anyone opening a note can instantly see which lines cause the most confusion — no need to scroll through a chat history.
+
+```
+Topic: Binary Search Trees
+
+Line 12 (deletion case)   ████████░░  82% of doubts land here
+Line 7  (insertion)       ███░░░░░░░  30%
+Line 20 (balancing)       ██████░░░░  61%
+```
+
+---
+
+## ✨ Features
+
+- 🔐 JWT-based authentication (signup/login, bcrypt-hashed passwords)
+- 📄 Notes organized by subject → chapter → topic
+- 🧩 Auto-splitting of notes into blocks for stable doubt-anchoring
+- ❓ Doubts tied to a specific block, not a floating chat
+- 💬 Threaded, upvotable answers — best explanation floats to the top
+- 🔥 Confusion Heatmap — per-block doubt density, visualized as an overlay
+- 🔎 Search notes by title, subject, chapter, or topic
+
+---
+
+## 🛠 Tech stack
+
+| Layer      | Tech                                  |
+|------------|----------------------------------------|
+| Frontend   | React, React Router, Axios             |
+| Backend    | Node.js, Express                       |
+| Database   | MongoDB, Mongoose                      |
+| Auth       | JWT, bcrypt                            |
+
+---
+
+## 📁 Project structure
 
 ```
 notemesh/
@@ -12,106 +58,72 @@ notemesh/
 │   ├── config/db.js
 │   ├── middleware/auth.js
 │   ├── models/          # User, Note, Doubt, Answer
-│   ├── controllers/      # authController, noteController, doubtController, answerController
-│   ├── routes/           # authRoutes, noteRoutes, doubtRoutes, answerRoutes
-│   ├── server.js
-│   ├── package.json
-│   └── .env.example
+│   ├── controllers/     # auth, note (+ heatmap), doubt, answer
+│   ├── routes/
+│   └── server.js
 └── frontend/
-    ├── public/index.html
     └── src/
         ├── api/axios.js
         ├── context/AuthContext.js
-        ├── pages/         # Login, Signup, Dashboard, CreateNote, NoteView
-        ├── components/    # DoubtPanel, Heatmap
-        ├── styles/App.css
-        ├── App.js
-        └── index.js
+        ├── pages/        # Login, Signup, Dashboard, CreateNote, NoteView
+        ├── components/   # DoubtPanel, Heatmap
+        └── App.js
 ```
 
-## MVP feature set (what's actually implemented)
+---
 
-- **Auth**: signup/login with JWT, passwords hashed with bcrypt.
-- **Notes**: create a note (title, subject, chapter, topic, content). Content
-  is auto-split into blocks on blank lines — each block gets a stable `blockId`.
-- **Doubts**: any logged-in user can raise a doubt on a specific block.
-- **Answers**: threaded answers per doubt, with upvoting. Answers list sorts
-  by upvote count so the best explanation floats up.
-- **Confusion Heatmap**: `GET /api/notes/:id/heatmap` aggregates doubt counts
-  per block and returns a normalized intensity (0–1). The frontend renders
-  this as a red overlay on each block — darker = more students got stuck there.
-- **Search**: notes list can be filtered by subject/chapter/topic or searched
-  by title.
+## 🚀 Getting started
 
-## What's intentionally left out of v1 (natural next steps)
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally, or a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
 
-- Rich text editor (currently plain textarea, split by blank lines)
-- Role-based permissions (senior/tutor badges exist in the schema but aren't
-  enforced anywhere yet)
-- Doubt resolution workflow beyond a simple `resolved` boolean
-- Notifications / real-time updates (would use Socket.io)
-- File/image uploads in notes
-
-## How to run it locally
-
-### 1. Prerequisites
-- Node.js 18+ installed
-- MongoDB running locally (or a free MongoDB Atlas cluster)
-
-### 2. Backend
-
+### 1. Clone and set up the backend
 ```bash
-cd backend
+git clone https://github.com/<your-username>/notemesh.git
+cd notemesh/backend
 npm install
 cp .env.example .env
-# edit .env: set MONGO_URI (Atlas connection string or mongodb://127.0.0.1:27017/notemesh)
-# and set JWT_SECRET to any long random string
-npm run dev      # requires nodemon (installed as devDependency)
-# or: npm start
 ```
-
-Backend runs on `http://localhost:5000`. Confirm it's alive:
-`http://localhost:5000/api/health` → `{"status":"ok"}`
-
-### 3. Frontend
-
-Open a second terminal:
-
+Edit `.env` and set:
+```
+MONGO_URI=mongodb://127.0.0.1:27017/notemesh
+JWT_SECRET=<any long random string>
+```
+Start the API:
 ```bash
-cd frontend
+npm run dev
+```
+Runs on `http://localhost:5000`. Verify with `GET /api/health`.
+
+### 2. Set up the frontend
+In a second terminal:
+```bash
+cd notemesh/frontend
 npm install
 npm start
 ```
+Runs on `http://localhost:3000`.
 
-Frontend runs on `http://localhost:3000` and talks to the backend at
-`http://localhost:5000/api` by default (override with a `.env` containing
-`REACT_APP_API_URL=http://localhost:5000/api` if you deploy the backend
-elsewhere).
-
-### 4. Try it out
-
+### 3. Try it out
 1. Sign up for an account.
-2. Click "New Note", fill in subject/chapter/topic, and write a few
-   paragraphs separated by blank lines.
-3. Open the note, click on any paragraph — a doubt panel opens under it.
-4. Ask a doubt, then answer it (you can use a second account to simulate a
-   classmate answering and upvoting).
-5. Refresh the note — the block you asked a doubt on now has a light red
-   tint. Ask more doubts on the same block and watch the tint deepen
-   relative to the note's other blocks — that's the confusion heatmap.
+2. Click **New Note**, fill in subject/chapter/topic, and write a few paragraphs separated by blank lines.
+3. Open the note and click any paragraph — a doubt panel opens beneath it.
+4. Ask a doubt, then answer/upvote it (use a second account to simulate a classmate).
+5. Refresh the note — the block gets a light red tint. Add more doubts to the same block and watch the tint deepen relative to the rest of the note — that's the confusion heatmap in action.
 
-## Deploying (when you're ready)
+---
 
-- Backend: Render / Railway / Fly.io (set `MONGO_URI` and `JWT_SECRET` as
-  env vars), or MongoDB Atlas + any Node host.
-- Frontend: Vercel / Netlify, pointing `REACT_APP_API_URL` at your deployed
-  backend URL.
+## 🗺 Roadmap
 
-## Resume-ready framing
+- [ ] Rich text editor for notes (currently plain text split on blank lines)
+- [ ] Role-based permissions (student / senior / tutor)
+- [ ] Real-time updates via Socket.io
+- [ ] Image/file attachments in notes
+- [ ] Full-text search across doubt archive
 
-"I built NoteMesh because doubts in class WhatsApp groups get buried and
-re-asked every semester. Notes are stored as discrete blocks so a doubt can
-be anchored to the exact paragraph it's about, not just posted into a
-generic thread. I also built a confusion-heatmap endpoint that aggregates
-doubt counts per block and normalizes them, so a student — or a teacher —
-can see at a glance which part of a topic causes the most confusion."
+---
+
+## 📄 License
+
+MIT
